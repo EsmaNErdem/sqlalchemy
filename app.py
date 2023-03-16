@@ -4,7 +4,7 @@ from flask import Flask, render_template, request, redirect
 from models import db, connect_db, User
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:root@localhost:6236/blogly'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///blogly'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = True
 
@@ -80,6 +80,7 @@ def delete_user(user_id):
 
     return redirect('/')
 
-
+with app.app_context():
+    db.create_all()
 
 
