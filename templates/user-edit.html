@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block title %} {{user.id}} User Edit Form{% endblock %}
+
+{% block content %}
+<form method="POST">
+    <p>First Name:     <input id="first-name" name="first-name" value="{{user.first_name}}"></p>
+    <p>Last Name:  <input id="last-name" name="last-name" value="{{user.last_name}}"></p>
+    <p>Image URL:   <input id="img-url" name="img-url" value="{{user.image_url}}"></p>
+    <a href="/users" class="btn btn-outline-info">Cancel</a>
+    <button type="submit">Save</button>
+</form>
+{% endblock %}
