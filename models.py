@@ -20,11 +20,11 @@ class User(db.Model):
                    primary_key=True,
                     autoincrement=True)
     first_name = db.Column(db.Text,
-                     nullable=False,)
+                     nullable=False)
     last_name = db.Column(db.Text,
-                     nullable=False,)
+                     nullable=False)
     image_url = db.Column(db.Text,
-                     nullable=False, default = default_img)
+                     nullable=True, default = default_img)
     @property
     def get_full_name(self):
         """Return users fullname"""

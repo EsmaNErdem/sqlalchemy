@@ -7,12 +7,13 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///blogly'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = True
-
+app.app_context().push()
 connect_db(app)
 # db.create_all()
 
 from flask_debugtoolbar import DebugToolbarExtension
 app.config['SECRET_KEY'] = "MOKEY"
+app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 debug = DebugToolbarExtension(app)
 
 
@@ -27,7 +28,7 @@ def list_users():
 def add_more_users_form():
     """Shows the form to add more users"""
 
-    return render_template("add.user.html")
+    return render_template("add-user.html")
 
 @app.route("/add-user", methods= ["POST"])
 def add_more_users(): 
@@ -55,7 +56,7 @@ def edit_and_delete_user_form(user_id):
     """Shows you the form to edit user info"""
 
     user = User.query.get_or_404(user_id)
-    return render_template('user-edit,html', user=user)
+    return render_template('user-edit.html', user=user)
 
 @app.route("/users/<int:user_id>/edit", methods=["POST"])
 def update_user(user_id):
@@ -63,7 +64,7 @@ def update_user(user_id):
     user = User.query.get_or_404(user_id)
     user.first_name = request.form['first-name']
     user.last_name = request.form['last-name']
-    user.img = request.form['img-url']
+    user.image_url = request.form['img-url']
 
     db.session.add(user)
     db.session.commit()
@@ -80,7 +81,7 @@ def delete_user(user_id):
 
     return redirect('/')
 
-with app.app_context():
-    db.create_all()
+# with app.app_context():
+#     db.create_all()
 
 
