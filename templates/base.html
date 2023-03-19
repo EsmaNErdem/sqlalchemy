@@ -17,6 +17,9 @@
 </head>
 <body>
     <h1>Welcome to Blogly</h1>
+    {% for msg in get_flashed_messages() %}
+    <div class="alert alert-info">{{ msg }}</div>
+    {% endfor %}
     {% block content %} {% endblock %}
 </body>
 </html>

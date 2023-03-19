@@ -10,4 +10,12 @@
     {% endfor %}
 </ul>
 <p><a href="/add-user">Add More User</a></p>
+<h2>Recent Posts:</h2>
+    {% for post in posts %}
+    <h3>
+        <a href="/posts/{{post.is}}">{{post.title}}</a>
+    </h3>
+    <h4>{{post.content}}</h4>
+    <p> By {{post.user.get_full_name}} on {{post.friendly_time}}</p>
+    {% endfor %}
 {% endblock %}

@@ -4,13 +4,25 @@
 
 {% block content %}
 <div class="container">
-    <h2>{{user.first_name}} {{user.last_name}}</h2>
+    <h2>{{user.get_full_name}}</h2>
         
     <img class="img-fluid" src="{{user.image_url}}" alt="{{user.first_name}} {{user.last_name}}">
     <form >
         <button formaction="/users/{{user.id}}/edit" formmethod="GET">EDIT</button>
         <button formaction="/users/{{user.id}}/delete" formmethod="POST">DELETE USER</button>
+        <button formaction="/" formmethod="GET">Cancel</button>
     </form>
-          
+    {% if user.posts %}
+        <h2>Posts</h2>
+        <ul>
+            {% for post in user.posts %}
+            <li><a href="/posts/{{post.id}}">{{post.title}}</a></li>
+            {% endfor%}
+        </ul>
+    {% endif %}
+    
+    <form>
+        <button formaction="/users/{{user.id}}/posts/new" formmethod="GET">Add Post</button>
+    </form>
 </div>
 {% endblock %}
