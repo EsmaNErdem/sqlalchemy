@@ -65,5 +65,42 @@ class Post(db.Model):
         """Convert datetime to human readable text"""
 
         return self.created_at.strftime("%a %b %-d  %Y, %-I:%M %p")
-
     
+class Tag(db.Model):
+    """Creating Tag Model"""
+
+    __tablename__ = "tags"
+
+    id = db.Column(db.Integer,
+                   primary_key=True,
+                    autoincrement=True)
+    name = db.Column(db.Text,
+                     nullable=False)
+    posts = db.relationship('Post', 
+                            secondary='post_tags',
+                            backref='tags')
+
+    def __repr__(self):
+        """Show info"""
+
+        u = self
+        return f"<Tag id:{u.id} name:{u.name}>"
+    
+
+class PostTag(db.Model):
+    """Creating PostTag Model"""
+
+    __tablename__ = "post_tags"
+
+    post_id = db.Column(db.Integer,
+                       db.ForeignKey("posts.id"),
+                       primary_key=True)
+    tag_id = db.Column(db.Integer,
+                       db.ForeignKey("tags.id"),
+                       primary_key=True)
+
+    def __repr__(self):
+        """Show info"""
+
+        u = self
+        return f"<Tag post_id:{u.post_id} tag_id:{u.tag_id}>"

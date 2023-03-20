@@ -22,7 +22,7 @@ class BloglyTestCase(TestCase):
             resp = client.post('/add-user', data={
                 'first-name': 'Esma',
                 'last-name' : 'Baker',
-                'img-url': 'https://hips.hearstapps.com/hmg-prod/images/dog-jokes-1581711487.jpg?crop=0.684xw:1.00xh;0.274xw,0&resize=1200:*'
+                'img-url': ''
             }, follow_redirects=True)
 
             assert resp.status == '200 OK'
@@ -37,7 +37,7 @@ class BloglyTestCase(TestCase):
             assert resp.status == '200 OK'
             html = resp.get_data(as_text=True)
             self.assertIn('<button formaction="/users/1/delete" formmethod="POST">DELETE USER</button>', html)
-
+# --------------POST--------------
     def test_add_post(self):
         with app.test_client() as client:
 
@@ -55,15 +55,60 @@ class BloglyTestCase(TestCase):
     def test_post_edit(self):
         with app.test_client() as client:
 
-            resp = client.post('/posts/1/edit', data={
+            resp = client.post('/posts/5/edit', data={
                 'post-title': 'you better work',
                 'post-content': 'I hope it works'
             }, follow_redirects=True)
 
             assert resp.status == '200 OK'
             html = resp.get_data(as_text=True)
-            assert resp.request.path == '/posts/1'
+            assert resp.request.path == '/posts/5'
             self.assertIn('<p>I hope it works</p>', html)
+    
+    def test_post_detail(self):
+        with app.test_client() as client:
+
+            resp = client.get('/posts/5')
+            html = resp.get_data(as_text=True)
+            self.assertEqual(resp.status_code, 200)
+            self.assertIn('<p>I hope it works</p>', html)
+#--------------------TAG--------------------
+    def test_add_tag(self):
+        with app.test_client() as client:
+
+            resp = client.post('/tags/new', data={
+                'tag-name': 'smile'
+            }, follow_redirects=True)
+
+            assert resp.status == '200 OK'
+            html = resp.get_data(as_text=True)
+            assert resp.request.path == '/tags'
+            self.assertIn('smile</a></li>', html)
+            self.assertIn('<button formaction="/tags/new" formmethod="GET">Add Tag</button>', html)
             
+
+
+    def test_tag_edit(self):
+        with app.test_client() as client:
+
+            resp = client.post('/tags/5/edit', data={
+                'tag-name': 'fabolous'
+            }, follow_redirects=True)
+
+            assert resp.status == '200 OK'
+            html = resp.get_data(as_text=True)
+            assert resp.request.path == '/tags/5'
+
+            self.assertIn('<h2>fabolous</h2>', html)
+            self.assertIn('<button formaction="/tags/5/edit" formmethod="GET">EDIT </button>', html)
+    
+    def test_tag_detail(self):
+        with app.test_client() as client:
+
+            resp = client.get('/tags/2')
+            html = resp.get_data(as_text=True)
+            self.assertEqual(resp.status_code, 200)
             # import pdb
             # pdb.set_trace()
+            self.assertIn('<h2>Even More</h2>', html)
+            

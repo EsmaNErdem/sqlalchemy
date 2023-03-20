@@ -7,6 +7,12 @@
 <form method="POST">
     <p> Title: <input type="text" id="post-title" name="post-title" value=""></p>
     <p> Content: <input type="text" id="post-content" name="post-content" value=""></p>
+    <div>
+        {% for tag in tags %}
+        <input type="checkbox" value="{{tag.id}}" name="tags" id="tag-{{tag.id}}">
+        <label for="tag-{{tag.id}}">{{tag.name}}</label>
+        {% endfor %}
+    </div>    
     <button formaction="/users/{{user.id}}" formmethod="GET">Cancel</button>
     <button type="submit">Add</button>
 </form>
