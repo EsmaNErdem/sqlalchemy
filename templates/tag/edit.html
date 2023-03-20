@@ -7,13 +7,11 @@
     <p>Tag Name:     <input id="tag-name" name="tag-name" value="{{tag.name}}"></p>
     <div>
         {% for post in posts %}
-        {% if post in tag.posts %}
-        <input type="checkbox" value="{{post.id}}" name="posts" id="post-{{post.id}}" checked>
+        
+        <input type="checkbox" value="{{post.id}}" name="posts" id="post-{{post.id}}"
+         {% if post in tag.posts %} checked {% endif %}>
         <label for="post-{{post.id}}">{{post.title}}</label>
-        {% else %}
-        <input type="checkbox" value="{{post.id}}" name="posts" id="post-{{post.id}}">
-        <label for="post-{{post.id}}">{{post.title}}</label>
-        {% endif %}
+        
         {% endfor %}
     </div> 
     <button formaction="/tags/{{tag.id}}" formmethod="GET">Cancel</button>
