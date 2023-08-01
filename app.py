@@ -184,6 +184,11 @@ def add_tag():
 
     tag_name = request.form['tag-name']
     tag = Tag(name=tag_name)
+
+    post_ids = [int(post_id) for post_id in request.form.getlist('posts')]
+    posts = Post.query.filter(Post.id.in_(post_ids)).all()
+    tag.posts = posts
+
     db.session.add(tag)
     db.session.commit()
 
@@ -205,6 +210,11 @@ def tag_edit(tag_id):
 
     tag = Tag.query.get_or_404(tag_id)
     tag.name = request.form['tag-name']
+
+    post_ids = [int(post_id) for post_id in request.form.getlist('posts')]
+    posts = Post.query.filter(Post.id.in_(post_ids)).all()
+    tag.posts = posts
+    
     db.session.add(tag)
     db.session.commit()
     
